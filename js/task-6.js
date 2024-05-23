@@ -4,42 +4,35 @@ function getRandomHexColor() {
     .padStart(6, 0)}`;
 }
 
+const inputEl = document.querySelector('[type=number]');
 const createEl = document.querySelector('[data-create]');
+const containEl = document.querySelector('#boxes');
 const destroyEl = document.querySelector('[data-destroy]');
-const inputEl = document.querySelector('input[type=number]');
-const boxesEl = document.querySelector('#boxes');
 
 createEl.addEventListener('click', () => {
   createBoxes(inputEl.value);
 });
 
 destroyEl.addEventListener('click', () => {
-  clearBoxes();
-  inputEl.value = '';
+  destroyBoxes();
 });
 
-const createBoxes = amount => {
-  clearBoxes();
+function createBoxes(amount) {
+  let collection = '';
   let size = 30;
-
-  if (amount >= 1 && amount <= 100) {
+  if (amount > 0 && amount <= 100) {
     for (let i = 0; i < amount; i++) {
-      const box = document.createElement('div');
-
-      box.style.width = `${size}px`;
-      box.style.height = `${size}px`;
-      box.style.backgroundColor = getRandomHexColor();
-
-      boxesEl.appendChild(box);
+      collection += `<div style="width: ${size}px; height: ${size}px;background-color: ${getRandomHexColor()}; border: 2px solid black; border-radius: 7px; margin-bottom: 10px;"></div>\n`;
       size += 10;
     }
   } else {
-    alert('Provide value in range from 1 to 100');
+    alert('Enter the number from 1-100');
+    inputEl.value = ``;
+    return;
   }
-};
+  containEl.innerHTML = collection;
+}
 
-const clearBoxes = () => {
-  while (boxesEl.firstChild) {
-    boxesEl.removeChild(boxesEl.firstChild);
-  }
-};
+function destroyBoxes() {
+  containEl.innerHTML = ``;
+}
